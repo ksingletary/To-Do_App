@@ -1,0 +1,23 @@
+body {
+    background-color: rgb(170, 159, 123);
+}
+
+.button {
+  background-color: rgb(62, 121, 179); /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 8px 10px; /* Some padding */
+  font-size: 14px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+h1 {
+    font-family: 'Trebuchet MS'; 
+    padding-left: 3em;
+    color: steelblue;
+}
+
+h3 {
+    font-family: sans-serif;
+    color: rgb(18, 20, 25);
+}
