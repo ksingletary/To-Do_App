@@ -69,14 +69,18 @@ const displayList = items => {
             li.append(completeBtn);
             li.append(deleteBtn);
             deleteBtn.addEventListener('click', function(evt){
-                evt.preventDefault();
                 li.remove();
-                localStorage.removeItem('todos');
+                const name = JSON.parse(localStorage.getItem("todos")) || [];
+                const arrToSave = name.filter(todo => todo.task !== todos.task);
+                localStorage.setItem('todos', JSON.stringify(arrToSave));
             })  
             completeBtn.addEventListener('click', function(evt){
                 var node = document.querySelector("li");
                 li.style.textDecoration = "line-through";
                 document.getElementById("compUL").appendChild(node);
+                const name = JSON.parse(localStorage.getItem("todos")) || [];
+                const arrToSave = name.filter(todo => todo.task !== todos.task);
+                localStorage.setItem('todos', JSON.stringify(arrToSave));
             })   
             
             document.getElementById("myUL").appendChild(li);
@@ -86,7 +90,7 @@ const displayList = items => {
             const name = JSON.parse(localStorage.getItem("todos")) || [];
             displayList(name);
         }   else{
-            localStorage.removeItem('todos')
+            Todos = [];
         }
 
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
