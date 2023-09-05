@@ -43,6 +43,18 @@ button.addEventListener('click', function(evt){
         deleteBtn.addEventListener('click', function(evt){
             evt.preventDefault();
             newLi.remove();
+            const displayList = items => {
+                items.forEach((todos) => {
+                    if (JSON.parse(localStorage.getItem('todos')) !==""){
+                        const name = JSON.parse(localStorage.getItem("todos")) || [];
+                        const arrToSave = name.filter(todo => todo.task !== todos.task);
+                        localStorage.setItem('todos', JSON.stringify(arrToSave))
+                        displayList(name);
+                    }   else{
+                        Todos = [];
+                    }
+                })
+            }
         })  
         completeBtn.addEventListener('click', function(evt){
             var node = document.querySelector("li");
