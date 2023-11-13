@@ -1,109 +1,48 @@
 
-const button = document.querySelector('.button');
-const Todos = [];
-button.addEventListener('click', function(evt){
+const submit = document.getElementById('submit');
+const ul = document.querySelector('ul');
 
-    //setting variables/classes
+if(localStorage.length !== 0){
+    ul.innerHTML = localStorage.getItem('ul');
+}
 
-    evt.preventDefault();
-    var inputValue = document.getElementById("myInput").value;
-    const newLi = document.createElement('li');
-    newLi.setAttribute("class", "rmv");
-    newLi.appendChild(document.createTextNode(inputValue));
-    const ulLength = document.getElementById('myUL').getElementsByTagName('li').length;
-    const firstUL = document.getElementById('myUL').getElementsByTagName('li');
+const removeBtn = document.querySelector('.rmvBtn');
 
-    //if input is empty alert user, otherwise add it to list
+//Add li for todo
+submit.addEventListener('click', function(e){
+    e.preventDefault();
 
-    if (inputValue === '' && ulLength < 1) {
-        alert("Please add a task to your list");
-      } else if (inputValue === '' && ulLength >= 1){
-        alert("Please enter a task");
-      } else {
-        document.getElementById("myUL").appendChild(newLi);
-        Todos.push({task: newLi.innerText, isCompleted: false });
-
-        //add to localstorage
-
-        function addToLocalStorage(todos) {
-            localStorage.setItem('todos', JSON.stringify(Todos));
-          }
-        addToLocalStorage(Todos);
-
-        //adding delete and complete buttons to list item
-
-        let deleteBtn = document.createElement("button");
-        let completeBtn = document.createElement("button");
-        completeBtn.textContent = "Completed"
-        deleteBtn.innerText = "X"
-        deleteBtn.setAttribute("id", "delete-btn")
-        completeBtn.setAttribute("class", "complete");
-        newLi.append(completeBtn);
-        newLi.append(deleteBtn);
-        deleteBtn.addEventListener('click', function(evt){
-            evt.preventDefault();
-            newLi.remove();
-            const displayList = items => {
-                items.forEach((todos) => {
-                    if (JSON.parse(localStorage.getItem('todos')) !==""){
-                        const name = JSON.parse(localStorage.getItem("todos")) || [];
-                        const arrToSave = name.filter(todo => todo.task !== todos.task);
-                        localStorage.setItem('todos', JSON.stringify(arrToSave))
-                        displayList(name);
-                    }   else{
-                        Todos = [];
-                    }
-                })
-            }
-        })  
-        completeBtn.addEventListener('click', function(evt){
-            var node = document.querySelector("li");
-            newLi.style.textDecoration = "line-through";
-            document.getElementById("compUL").appendChild(node);
-        })   
-      }
-    document.getElementById("myInput").value = "";
+    const newLi = document.createElement("li");
+    const toDoAdd = document.getElementById("myInput");
+    const btn = document.createElement('button');
     
-})
+    if(toDoAdd.value === ""){
+        return;
+    }else{
+        newLi.innerText = toDoAdd.value;
+        btn.innerHTML = '&#120;';
 
-//retrieve from local storage
+        btn.setAttribute('class', 'rmvBtn');
 
-const displayList = items => {
-        items.forEach((todos) => {
-            const li = document.createElement("li");
-            li.innerHTML = todos.task;
-            let deleteBtn = document.createElement("button");
-            let completeBtn = document.createElement("button");
-            completeBtn.textContent = "Completed"
-            deleteBtn.innerText = "X"
-            deleteBtn.setAttribute("id", "delete-btn")
-            completeBtn.setAttribute("class", "complete");
-            li.append(completeBtn);
-            li.append(deleteBtn);
-            deleteBtn.addEventListener('click', function(evt){
-                li.remove();
-                const name = JSON.parse(localStorage.getItem("todos")) || [];
-                const arrToSave = name.filter(todo => todo.task !== todos.task);
-                localStorage.setItem('todos', JSON.stringify(arrToSave));
-            })  
-            completeBtn.addEventListener('click', function(evt){
-                var node = document.querySelector("li");
-                li.style.textDecoration = "line-through";
-                document.getElementById("compUL").appendChild(node);
-                const name = JSON.parse(localStorage.getItem("todos")) || [];
-                const arrToSave = name.filter(todo => todo.task !== todos.task);
-                localStorage.setItem('todos', JSON.stringify(arrToSave));
-            })   
-            
-            document.getElementById("myUL").appendChild(li);
-        });
+        newLi.append(btn);
+        ul.appendChild(newLi);
+
+        toDoAdd.value = '';
+        localStorage.setItem("ul", ul.innerHTML);
         };
-        if (JSON.parse(localStorage.getItem('todos')) !==""){
-            const name = JSON.parse(localStorage.getItem("todos")) || [];
-            displayList(name);
-        }   else{
-            Todos = [];
-        }
+        
+});
+
+//Strike through on li when done
+ul.addEventListener('click', function(e){
+    if(e.target.tagName.toLowerCase() === 'button'){
+        e.target.parentElement.remove();
+    };
+
+    e.target.classList.toggle("completed");
+    localStorage.setItem("ul", ul.innerHTML);
+});
+
 
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
 
@@ -112,6 +51,7 @@ if (localStorage.getItem('darkModeEnabled')){
     toggleSwitch.checked = true;
 }
 
+// Dark mode switch
 toggleSwitch.addEventListener('click', function(evt){
     const {checked} = toggleSwitch;
     if(checked){
@@ -121,9 +61,3 @@ toggleSwitch.addEventListener('click', function(evt){
     }
     document.body.className = checked ? 'dark' : ""
 })
-
-
-
-
-
-
